@@ -1655,7 +1655,7 @@ describe('IsBase32', () => {
 
 describe('IsBase64', () => {
   const constraint = '';
-  const urlNotSafe = [btoa('malicious_data+/=')]
+  const urlNotSafe = [btoa('malicious_data+/=')];
   const validValues = ['aGVsbG8='];
   const invalidValues = [null, undefined, 'hell*mynameisalex'];
 
