@@ -4793,7 +4793,7 @@ describe('IsVatId', () => {
   }
 
   const validAtVatIds = ['U12345678', 'U01234567'];
-  const invalidAtVatIds = ['12345678','000', 'abcdefgh'];
+  const invalidAtVatIds = ['12345678', '000', 'abcdefgh'];
 
   it('should not fail for a valid VAT id for valid country code', () => {
     return checkValidValues(new MyClass(), validAtVatIds);
