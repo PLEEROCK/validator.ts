@@ -4572,7 +4572,7 @@ describe('ArrayUnique with identifier', () => {
     ['world', 'hello', 'superman'],
     ['world', 'superman', 'hello'],
     ['superman', 'world', 'hello'],
-    ['1', '2', null, undefined],
+    ['1', '2', null, null, undefined, undefined],
   ].map(list => list.map(name => ({ name })));
   const invalidValues: any[] = [
     null,
