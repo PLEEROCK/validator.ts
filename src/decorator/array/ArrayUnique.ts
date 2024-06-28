@@ -12,7 +12,9 @@ export function arrayUnique(array: unknown[], identifier?: ArrayUniqueIdentifier
   if (!Array.isArray(array)) return false;
 
   if (identifier) {
-    array = array.map(o => (o != null ? identifier(o) : o));
+    array = array.map(o => (o != null ? identifier(o) : o)).filter(o => o != null);
+
+    if (array.length === 0) return true;
   }
 
   const uniqueItems = array.filter((a, b, c) => c.indexOf(a) === b);
