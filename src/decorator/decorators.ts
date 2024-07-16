@@ -121,6 +121,7 @@ export * from './string/is-iso4217-currency-code';
 // Type checkers
 // -------------------------------------------------------------------------
 
+export * from './typechecker/IsBigInt';
 export * from './typechecker/IsBoolean';
 export * from './typechecker/IsDate';
 export * from './typechecker/IsNumber';
