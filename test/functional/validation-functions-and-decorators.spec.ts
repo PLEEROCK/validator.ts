@@ -760,7 +760,9 @@ describe('IsInt', () => {
 });
 
 describe('IsBigInt', () => {
-  const validValues = [2n, 4n, 100n, 1000n];
+  // By casting bigints via function instead of `2n` annotation we can avoid
+  // to bump the typescript build target from es2018 to es2020
+  const validValues = [BigInt(2), BigInt(4), BigInt(100), BigInt(1000)];
   const invalidValues = ['01', '-01', '000', '100e10', '123.123', '   ', '', 10, 2.5, -0.1];
 
   class MyClass {
