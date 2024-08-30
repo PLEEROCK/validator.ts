@@ -193,6 +193,7 @@ import {
   isTaxId,
   IsTaxId,
   IsISO4217CurrencyCode,
+  IsLuhn, isLuhn,
 } from '../../src/decorator/decorators';
 import { Validator } from '../../src/validation/Validator';
 import { ValidatorOptions } from '../../src/validation/ValidatorOptions';
@@ -788,6 +789,39 @@ describe('IsString', () => {
     return checkReturnedError(new MyClass(), invalidValues, validationType, message);
   });
 });
+
+describe("IsLuhn", ()=>{
+  const validValues = ['4532015112830366', '6011514433546201', '371449635398431', '6219861907174873'];
+  const invalidValues = ['4532015112830367', '1234567890123456', null, undefined, '', 6219861907174873];
+
+  class MyClass {
+    @IsLuhn()
+    someProperty: string;
+  }
+
+  it('should not fail if validator.validate said that its valid', () => {
+    return checkValidValues(new MyClass(), validValues);
+  });
+
+
+  it('should fail if validator.validate said that its invalid', () => {
+    return checkInvalidValues(new MyClass(), invalidValues);
+  });
+
+  it('should not fail if method in validator said that its valid', () => {
+    validValues.forEach(value => expect(isLuhn(value)).toBeTruthy());
+  });
+
+  it('should fail if method in validator said that its invalid', () => {
+    invalidValues.forEach(value => expect(isLuhn(value as any)).toBeFalsy());
+  });
+
+  it('should return error object with proper data', () => {
+    const validationType = 'isLuhn';
+    const message = 'someProperty must be a valid card number';
+    return checkReturnedError(new MyClass(), invalidValues, validationType, message);
+  });
+})
 
 describe('IsDateString', () => {
   const validValues = [
