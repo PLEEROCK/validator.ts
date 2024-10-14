@@ -26,7 +26,7 @@ export function IsIPRange(version?: IsIpRangeVersion, validationOptions?: Valida
       name: IS_IP_RANGE,
       constraints: [version],
       validator: {
-        validate: (value, args): boolean => isIP(value, args?.constraints[0]),
+        validate: (value, args): boolean => isIPRange(value, args?.constraints[0]),
         defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be an ip range', validationOptions),
       },
     },
