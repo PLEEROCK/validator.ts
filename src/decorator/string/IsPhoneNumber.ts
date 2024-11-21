@@ -1,4 +1,4 @@
-import { PhoneNumberType } from '../../utils/phone-number-type';
+import { allPhoneNumberTypes, PhoneNumberType } from '../../utils/phone-number-type';
 import { ValidationOptions } from '../ValidationOptions';
 import { buildMessage, ValidateBy } from '../common/ValidateBy';
 
@@ -26,19 +26,7 @@ export function isPhoneNumber(
 ): boolean {
   try {
     // the list of all phone number types that are the output of .getType() method
-    let checkedNumberTypes = [
-      'FIXED_LINE_OR_MOBILE',
-      'MOBILE',
-      'FIXED_LINE',
-      'PREMIUM_RATE',
-      'TOLL_FREE',
-      'SHARED_COST',
-      'VOIP',
-      'PERSONAL_NUMBER',
-      'PAGER',
-      'UAN',
-      'VOICEMAIL',
-    ];
+    let checkedNumberTypes: Array<PhoneNumberType> = allPhoneNumberTypes;
 
     // Checking if accepted types array is passed to override the default
     if (acceptedNumbersTypes) {
@@ -64,17 +52,28 @@ export function isPhoneNumber(
  * @param acceptedNumbersTypes list of accepted number types (MOBILE, PAGER, etc...) if not provided then accept all valid phone numbers
  * If text doesn't start with the international calling code (e.g. +41), then you must set this parameter.
  */
-export function IsPhoneNumber(region?: CountryCode, validationOptions?: ValidationOptions,
+export function IsPhoneNumber(
+  region?: CountryCode,
+  validationOptions?: ValidationOptions,
   acceptedNumbersTypes?: Array<PhoneNumberType>
 ): PropertyDecorator {
+  // the list of all phone number types that are the output of .getType() method
+  let checkedNumberTypes: Array<PhoneNumberType> = allPhoneNumberTypes;
+
+  // Checking if accepted types array is passed to override the default
+  if (acceptedNumbersTypes) {
+    checkedNumberTypes = acceptedNumbersTypes;
+  }
+
   return ValidateBy(
     {
       name: IS_PHONE_NUMBER,
       constraints: [region],
       validator: {
-        validate: (value, args): boolean => isPhoneNumber(value, args?.constraints[0], acceptedNumbersTypes),
+        validate: (value, args): boolean => isPhoneNumber(value, args?.constraints[0], checkedNumberTypes),
         defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a valid phone number',
+          eachPrefix =>
+            eachPrefix + '$property must be a valid phone number of the following types' + checkedNumberTypes,
           validationOptions
         ),
       },
