@@ -49,15 +49,18 @@ export function isPhoneNumber(
  * the intl. calling code, if the calling code wont be provided then the region must be set.
  *
  * @param region 2 characters uppercase country code (e.g. DE, US, CH) for country specific validation.
+ * @param acceptedNumbersTypes list of accepted number types (MOBILE, PAGER, etc...) if not provided check only MOBILE.
  * If text doesn't start with the international calling code (e.g. +41), then you must set this parameter.
  */
-export function IsPhoneNumber(region?: CountryCode, validationOptions?: ValidationOptions): PropertyDecorator {
+export function IsPhoneNumber(region?: CountryCode, validationOptions?: ValidationOptions,
+  acceptedNumbersTypes?: Array<PhoneNumberType>
+): PropertyDecorator {
   return ValidateBy(
     {
       name: IS_PHONE_NUMBER,
       constraints: [region],
       validator: {
-        validate: (value, args): boolean => isPhoneNumber(value, args?.constraints[0]),
+        validate: (value, args): boolean => isPhoneNumber(value, args?.constraints[0], acceptedNumbersTypes),
         defaultMessage: buildMessage(
           eachPrefix => eachPrefix + '$property must be a valid phone number',
           validationOptions
