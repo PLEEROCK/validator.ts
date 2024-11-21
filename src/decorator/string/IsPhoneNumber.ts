@@ -16,7 +16,7 @@ export const IS_PHONE_NUMBER = 'isPhoneNumber';
  *
  * @param value the potential phone number string to test
  * @param region 2 characters uppercase country code (e.g. DE, US, CH) for country specific validation.
- * @param acceptedNumbersTypes list of accepted number types (MOBILE, PAGER, etc...) if not provided check only MOBILE.
+ * @param acceptedNumbersTypes list of accepted number types (MOBILE, PAGER, etc...) if not provided then accept all valid numbers.
  * If text doesn't start with the international calling code (e.g. +41), then you must set this parameter.
  */
 export function isPhoneNumber(
@@ -26,9 +26,21 @@ export function isPhoneNumber(
 ): boolean {
   try {
     // the list of all phone number types that are the output of .getType() method
-    let checkedNumberTypes = ['MOBILE'];
+    let checkedNumberTypes = [
+      'FIXED_LINE_OR_MOBILE',
+      'MOBILE',
+      'FIXED_LINE',
+      'PREMIUM_RATE',
+      'TOLL_FREE',
+      'SHARED_COST',
+      'VOIP',
+      'PERSONAL_NUMBER',
+      'PAGER',
+      'UAN',
+      'VOICEMAIL',
+    ];
 
-    // Checking if accepted types array is passed to override the default MOBILE number type
+    // Checking if accepted types array is passed to override the default
     if (acceptedNumbersTypes) {
       checkedNumberTypes = acceptedNumbersTypes;
     }
@@ -37,7 +49,7 @@ export function isPhoneNumber(
 
     // number must be valid and is one of the phone types the function accepts (ALL TYPES PROVIDED IN phone-number-types.ts)
     const result: boolean = !!phoneNum?.isValid() && !!checkedNumberTypes.some(item => item === phoneNum?.getType());
-    return !!result;
+    return result;
   } catch (error) {
     // logging?
     return false;
@@ -49,7 +61,7 @@ export function isPhoneNumber(
  * the intl. calling code, if the calling code wont be provided then the region must be set.
  *
  * @param region 2 characters uppercase country code (e.g. DE, US, CH) for country specific validation.
- * @param acceptedNumbersTypes list of accepted number types (MOBILE, PAGER, etc...) if not provided check only MOBILE.
+ * @param acceptedNumbersTypes list of accepted number types (MOBILE, PAGER, etc...) if not provided then accept all valid phone numbers
  * If text doesn't start with the international calling code (e.g. +41), then you must set this parameter.
  */
 export function IsPhoneNumber(region?: CountryCode, validationOptions?: ValidationOptions,
