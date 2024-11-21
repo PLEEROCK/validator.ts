@@ -73,7 +73,9 @@ export function IsPhoneNumber(
         validate: (value, args): boolean => isPhoneNumber(value, args?.constraints[0], checkedNumberTypes),
         defaultMessage: buildMessage(
           eachPrefix =>
-            eachPrefix + '$property must be a valid phone number of the following types' + checkedNumberTypes,
+            eachPrefix +
+            '$property must be a valid phone number and of the following types: ' +
+            checkedNumberTypes.toString(),
           validationOptions
         ),
       },
