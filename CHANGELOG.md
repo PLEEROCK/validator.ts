@@ -2,6 +2,21 @@
 
 _This changelog follows the [keep a changelog][keep-a-changelog]_ format to maintain a human readable changelog.
 
+### [0.14.2](https://github.com/typestack/class-validator/compare/v0.14.1...v0.14.2) (2024-10-18)
+
+#### Added
+
+- add validator name to `@IsOptional` decorator ([#2044](https://github.com/typestack/class-validator/issues/2044))
+
+#### Fixed
+
+- fix forbidUnknownValues to true by default when validatorOptions is undefined ([#2196](https://github.com/typestack/class-validator/issues/2196)) , closes [#1906](https://github.com/typestack/class-validator/issues/1906)
+
+#### Changed
+
+- update `libphonenumber-js` to `^1.11.1` from `^1.10.53`
+- update various dev-dependencies
+
 ### [0.14.1](https://github.com/typestack/class-validator/compare/v0.14.0...v0.14.1) (2024-01-12)
 
 #### Added
