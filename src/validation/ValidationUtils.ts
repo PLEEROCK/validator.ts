@@ -12,6 +12,10 @@ export function constraintToString(constraint: unknown): string {
     constraint = constraint.description;
   }
 
+  if (typeof constraint === 'function' && constraint.name) {
+    constraint = constraint.name;
+  }
+
   return `${constraint}`;
 }
 

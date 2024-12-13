@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const IS_EMPTY = 'isEmpty';
 
@@ -19,7 +21,7 @@ export function IsEmpty(validationOptions?: ValidationOptions): PropertyDecorato
       name: IS_EMPTY,
       validator: {
         validate: (value, args): boolean => isEmpty(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be empty', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-empty-each' : 'is-empty')
       },
     },
     validationOptions

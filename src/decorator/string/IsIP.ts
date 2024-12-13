@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isIPValidator from 'validator/lib/isIP';
 
 export type IsIpVersion = '4' | '6' | 4 | 6;
@@ -27,7 +29,7 @@ export function IsIP(version?: IsIpVersion, validationOptions?: ValidationOption
       constraints: [version],
       validator: {
         validate: (value, args): boolean => isIP(value, args?.constraints[0]),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be an ip address', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-ip-each' : 'is-ip'),
       },
     },
     validationOptions

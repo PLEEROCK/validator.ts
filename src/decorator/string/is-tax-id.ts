@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isTaxIDValidator from 'validator/lib/isTaxID';
 
 export const IS_TAX_ID = 'isTaxId';
@@ -31,10 +33,7 @@ export function IsTaxId(locale?: string, validationOptions?: ValidationOptions):
       constraints: [locale],
       validator: {
         validate: (value, args): boolean => isTaxId(value, args?.constraints[0]),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a Tax Identification Number',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-tax-id-each' : 'is-tax-id'),
       },
     },
     validationOptions

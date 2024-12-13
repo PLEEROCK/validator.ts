@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isSemVerValidator from 'validator/lib/isSemVer';
 
 export const IS_SEM_VER = 'isSemVer';
@@ -22,10 +24,7 @@ export function IsSemVer(validationOptions?: ValidationOptions): PropertyDecorat
       name: IS_SEM_VER,
       validator: {
         validate: (value, args): boolean => isSemVer(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a Semantic Versioning Specification',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-sem-ver-each' : 'is-sem-ver'),
       },
     },
     validationOptions

@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isMultibyteValidator from 'validator/lib/isMultibyte';
 
 export const IS_MULTIBYTE = 'isMultibyte';
@@ -22,10 +24,7 @@ export function IsMultibyte(validationOptions?: ValidationOptions): PropertyDeco
       name: IS_MULTIBYTE,
       validator: {
         validate: (value, args): boolean => isMultibyte(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must contain one or more multibyte chars',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-multibyte-each' : 'is-multibyte'),
       },
     },
     validationOptions

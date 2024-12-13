@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isBtcAddressValidator from 'validator/lib/isBtcAddress';
 
 export const IS_BTC_ADDRESS = 'isBtcAddress';
@@ -22,7 +24,7 @@ export function IsBtcAddress(validationOptions?: ValidationOptions): PropertyDec
       name: IS_BTC_ADDRESS,
       validator: {
         validate: (value, args): boolean => isBtcAddress(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a BTC address', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-btc-address-each' : 'is-btc-address'),
       },
     },
     validationOptions

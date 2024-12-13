@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import matchesValidator from 'validator/lib/matches';
 
 export const IS_MILITARY_TIME = 'isMilitaryTime';
@@ -23,10 +25,7 @@ export function IsMilitaryTime(validationOptions?: ValidationOptions): PropertyD
       name: IS_MILITARY_TIME,
       validator: {
         validate: (value, args): boolean => isMilitaryTime(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a valid representation of military time in the format HH:MM',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-military-time-each' : 'is-military-time'),
       },
     },
     validationOptions

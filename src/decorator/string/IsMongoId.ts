@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isMongoIdValidator from 'validator/lib/isMongoId';
 
 export const IS_MONGO_ID = 'isMongoId';
@@ -22,7 +24,7 @@ export function IsMongoId(validationOptions?: ValidationOptions): PropertyDecora
       name: IS_MONGO_ID,
       validator: {
         validate: (value, args): boolean => isMongoId(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a mongodb id', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-mongo-id-each' : 'is-mongo-id'),
       },
     },
     validationOptions

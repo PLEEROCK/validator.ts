@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isHSLValidator from 'validator/lib/isHSL';
 
 export const IS_HSL = 'isHSL';
@@ -24,7 +26,7 @@ export function IsHSL(validationOptions?: ValidationOptions): PropertyDecorator 
       name: IS_HSL,
       validator: {
         validate: (value, args): boolean => isHSL(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a HSL color', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-hsl-each' : 'is-hsl'),
       },
     },
     validationOptions

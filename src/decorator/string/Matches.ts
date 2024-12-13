@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import matchesValidator from 'validator/lib/matches';
 
 export const MATCHES = 'matches';
@@ -38,10 +40,7 @@ export function Matches(
       constraints: [pattern, modifiers],
       validator: {
         validate: (value, args): boolean => matches(value, args?.constraints[0], args?.constraints[1]),
-        defaultMessage: buildMessage(
-          (eachPrefix, args) => eachPrefix + '$property must match $constraint1 regular expression',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'matches-each' : 'matches'),
       },
     },
     validationOptions

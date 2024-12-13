@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const ARRAY_MAX_SIZE = 'arrayMaxSize';
 
@@ -22,10 +24,7 @@ export function ArrayMaxSize(max: number, validationOptions?: ValidationOptions)
       constraints: [max],
       validator: {
         validate: (value, args): boolean => arrayMaxSize(value, args?.constraints[0]),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must contain no more than $constraint1 elements',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'array-max-size-each' : 'array-max-size'),
       },
     },
     validationOptions

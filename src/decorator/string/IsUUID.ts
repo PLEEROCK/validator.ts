@@ -1,7 +1,9 @@
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isUuidValidator from 'validator/lib/isUUID';
 import * as ValidatorJS from 'validator';
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 
 export const IS_UUID = 'isUuid';
 
@@ -24,7 +26,7 @@ export function IsUUID(version?: ValidatorJS.UUIDVersion, validationOptions?: Va
       constraints: [version],
       validator: {
         validate: (value, args): boolean => isUUID(value, args?.constraints[0]),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a UUID', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-uuid-each' : 'is-uuid'),
       },
     },
     validationOptions

@@ -1,7 +1,9 @@
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isNumericValidator from 'validator/lib/isNumeric';
 import * as ValidatorJS from 'validator';
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 
 export const IS_NUMBER_STRING = 'isNumberString';
 
@@ -27,7 +29,7 @@ export function IsNumberString(
       constraints: [options],
       validator: {
         validate: (value, args): boolean => isNumberString(value, args?.constraints[0]),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a number string', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-number-string-each' : 'is-number-string'),
       },
     },
     validationOptions

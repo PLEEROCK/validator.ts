@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isLengthValidator from 'validator/lib/isLength';
 
 export const MAX_LENGTH = 'maxLength';
@@ -23,10 +25,7 @@ export function MaxLength(max: number, validationOptions?: ValidationOptions): P
       constraints: [max],
       validator: {
         validate: (value, args): boolean => maxLength(value, args?.constraints[0]),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be shorter than or equal to $constraint1 characters',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'max-length-each' : 'max-length'),
       },
     },
     validationOptions

@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isMagnetURIValidator from 'validator/lib/isMagnetURI';
 
 export const IS_MAGNET_URI = 'isMagnetURI';
@@ -22,10 +24,7 @@ export function IsMagnetURI(validationOptions?: ValidationOptions): PropertyDeco
       name: IS_MAGNET_URI,
       validator: {
         validate: (value, args): boolean => isMagnetURI(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be magnet uri format',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-magnet-uri-each' : 'is-magnet-uri'),
       },
     },
     validationOptions

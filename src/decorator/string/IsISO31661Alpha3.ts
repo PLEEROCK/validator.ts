@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isISO31661Alpha3Validator from 'validator/lib/isISO31661Alpha3';
 
 export const IS_ISO31661_ALPHA_3 = 'isISO31661Alpha3';
@@ -20,10 +22,7 @@ export function IsISO31661Alpha3(validationOptions?: ValidationOptions): Propert
       name: IS_ISO31661_ALPHA_3,
       validator: {
         validate: (value, args): boolean => isISO31661Alpha3(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a valid ISO31661 Alpha3 code',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-iso-31661-alpha3-each' : 'is-iso-31661-alpha3'),
       },
     },
     validationOptions

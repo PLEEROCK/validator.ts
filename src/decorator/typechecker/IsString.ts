@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const IS_STRING = 'isString';
 
@@ -19,7 +21,7 @@ export function IsString(validationOptions?: ValidationOptions): PropertyDecorat
       name: IS_STRING,
       validator: {
         validate: (value, args): boolean => isString(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a string', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-string-each' : 'is-string')
       },
     },
     validationOptions

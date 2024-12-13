@@ -1,7 +1,9 @@
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isUrlValidator from 'validator/lib/isURL';
 import * as ValidatorJS from 'validator';
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 
 export const IS_URL = 'isUrl';
 
@@ -24,7 +26,7 @@ export function IsUrl(options?: ValidatorJS.IsURLOptions, validationOptions?: Va
       constraints: [options],
       validator: {
         validate: (value, args): boolean => isURL(value, args?.constraints[0]),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a URL address', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-url-each' : 'is-url'),
       },
     },
     validationOptions

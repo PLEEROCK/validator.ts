@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isISO4217Validator from 'validator/lib/isISO4217';
 
 export const IS_ISO4217_CURRENCY_CODE = 'isISO4217CurrencyCode';
@@ -20,10 +22,7 @@ export function IsISO4217CurrencyCode(validationOptions?: ValidationOptions): Pr
       name: IS_ISO4217_CURRENCY_CODE,
       validator: {
         validate: (value, args): boolean => isISO4217CurrencyCode(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a valid ISO4217 currency code',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-iso4217-currency-code-each' : 'is-iso4217-currency-code'),
       },
     },
     validationOptions

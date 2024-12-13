@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const IS_DATE = 'isDate';
 
@@ -19,7 +21,7 @@ export function IsDate(validationOptions?: ValidationOptions): PropertyDecorator
       name: IS_DATE,
       validator: {
         validate: (value, args): boolean => isDate(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a Date instance', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-date-each' : 'is-date')
       },
     },
     validationOptions

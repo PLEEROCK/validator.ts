@@ -1,6 +1,8 @@
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from './ValidateBy';
+import { ValidateBy } from './ValidateBy';
 import { isLatLong } from './IsLatLong';
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 
 export const IS_LATITUDE = 'isLatitude';
 
@@ -20,10 +22,7 @@ export function IsLatitude(validationOptions?: ValidationOptions): PropertyDecor
       name: IS_LATITUDE,
       validator: {
         validate: (value, args): boolean => isLatitude(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a latitude string or number',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-latitude-each' : 'is-latitude')
       },
     },
     validationOptions
