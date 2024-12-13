@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const MIN_DATE = 'minDate';
 
@@ -20,10 +22,7 @@ export function MinDate(date: Date | (() => Date), validationOptions?: Validatio
       constraints: [date],
       validator: {
         validate: (value, args): boolean => minDate(value, args?.constraints[0]),
-        defaultMessage: buildMessage(
-          eachPrefix => 'minimal allowed date for ' + eachPrefix + '$property is $constraint1',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'min-date-each' : 'min-date')
       },
     },
     validationOptions

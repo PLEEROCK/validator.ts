@@ -8,6 +8,7 @@ import { ValidationArguments } from './ValidationArguments';
 import { ValidationUtils } from './ValidationUtils';
 import { isPromise, convertToArray } from '../utils';
 import { getMetadataStorage } from '../metadata/MetadataStorage';
+import { translate } from '../translator/Translator';
 
 /**
  * Executes validation over given object.
@@ -414,7 +415,11 @@ export class ValidationExecutor {
       (!this.validatorOptions || (this.validatorOptions && !this.validatorOptions.dismissDefaultMessages))
     ) {
       if (customValidatorMetadata && customValidatorMetadata.instance.defaultMessage instanceof Function) {
-        message = customValidatorMetadata.instance.defaultMessage(validationArguments);
+        const translator: TranslateFunction = (key: string): string => {
+          return translate(key, this.getLanguage());
+        };
+
+        message = customValidatorMetadata.instance.defaultMessage(validationArguments, translator);
       }
     }
 
@@ -426,4 +431,16 @@ export class ValidationExecutor {
     const type = customValidatorMetadata && customValidatorMetadata.name ? customValidatorMetadata.name : metadata.type;
     return type;
   }
+
+  private getLanguage(): string | null {
+    let language = this.validatorOptions?.language;
+
+    if (typeof language === 'function') {
+      language = language();
+    }
+
+    return language ?? null;
+  }
 }
+
+export type TranslateFunction = (key: string) => string;

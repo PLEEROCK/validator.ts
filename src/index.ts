@@ -21,6 +21,10 @@ export * from './validation/Validator';
 export * from './validation-schema/ValidationSchema';
 export * from './register-decorator';
 export * from './metadata/MetadataStorage';
+export * from './translator/Translator';
+export * from './translator/drivers/DefaultDriver';
+export * from './translator/drivers/I18nDriver';
+export * from './translator/drivers/NestI18nDriver';
 
 // -------------------------------------------------------------------------
 // Shortcut methods for api users

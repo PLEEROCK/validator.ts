@@ -18,6 +18,7 @@ Class-validator works on both browser and node.js platforms.
     - [Passing options](#passing-options)
   - [Validation errors](#validation-errors)
   - [Validation messages](#validation-messages)
+  - [Translation of validation messages](#translation-of-validation-messages)
   - [Validating arrays](#validating-arrays)
   - [Validating sets](#validating-sets)
   - [Validating maps](#validating-maps)
@@ -137,6 +138,8 @@ export interface ValidatorOptions {
 
   forbidUnknownValues?: boolean;
   stopAtFirstError?: boolean;
+
+  language?: string
 }
 ```
 
@@ -261,6 +264,88 @@ Message function accepts `ValidationArguments` which contains the following info
 - `targetName` - name of the object's class being validated
 - `object` - object that is being validated
 - `property` - name of the object's property being validated
+
+## Translation of validation messages
+
+The package supports translating error messages into different languages. Currently, the supported languages are:
+
+| Linguagem           | Código |
+|---------------------|--------|
+| English             | en     |
+| Portuguese (Brazil) | pt-br  |
+| Spanish             | es     |
+
+To translate error messages, simply set the language code in the `language` property of the options object when calling the validate function. For example:
+
+```ts
+import { validate } from 'class-validator';
+
+class MyClass {
+  @IsNotEmpty()
+  eicCode: string;
+}
+
+const model = new MyClass();
+
+validate(model, { language: 'en' }).then(errors => {
+  //
+});
+```
+
+If the language option is not specified, the default language will be English (en).
+
+**Default and Custom Driver**
+
+By default, the package uses the `DefaultDriver` to manage translations. However, it is possible to create a custom driver using the TranslatorDriver interface.
+
+Example of implementing a custom translation driver:
+
+```typescript
+import { setTranslatorDriver, TranslatorDriver } from 'class-validator';
+
+class MyTranslator implements TranslatorDriver {
+  translate(key: string, language?: string | null): string {
+    return 'Translated message';
+  }
+}
+
+setTranslatorDriver(new MyTranslator());
+```
+
+**Pre-built Drivers for i18n Integration**
+
+The package also provides support for internationalization using other popular third-party packages like i18n and nestjs-i18n, with out-of-the-box drivers.
+
+**Integration with i18n**
+
+Use the I18nDriver to integrate with the i18n package:
+
+```ts
+import { setTranslatorDriver, I18nDriver } from 'class-validator';
+import { I18n } from 'i18n';
+
+const i18n = new I18n();
+
+setTranslatorDriver(new I18nDriver(i18n));
+```
+
+**Integration with nestjs-i18n**
+
+With the nestjs-i18n package, the `NestI18nDriver` can be configured directly in the bootstrap of NestJS:
+
+```ts
+import { setTranslatorDriver, NestI18nDriver } from 'class-validator';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  
+  setTranslatorDriver(new NestI18nDriver(app.get(I18nService)));
+  
+  await app.listen(3000);
+}
+```
+
+In this way, the package's error messages will be automatically translated using the internationalization service configured in the project.
 
 ## Validating arrays
 

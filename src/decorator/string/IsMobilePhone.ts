@@ -1,7 +1,9 @@
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isMobilePhoneValidator from 'validator/lib/isMobilePhone';
 import * as ValidatorJS from 'validator';
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 
 export const IS_MOBILE_PHONE = 'isMobilePhone';
 
@@ -48,7 +50,7 @@ export function IsMobilePhone(
       constraints: [locale, options],
       validator: {
         validate: (value, args): boolean => isMobilePhone(value, args?.constraints[0], args?.constraints[1]),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a phone number', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-mobile-phone-each' : 'is-mobile-phone'),
       },
     },
     validationOptions

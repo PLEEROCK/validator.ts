@@ -7,6 +7,7 @@ import { ValidationArguments } from './validation/ValidationArguments';
 import { getFromContainer } from './container';
 import { MetadataStorage, getMetadataStorage } from './metadata/MetadataStorage';
 import { ValidationOptions } from './decorator/ValidationOptions';
+import { TranslateFunction } from './validation/ValidationExecutor';
 
 export interface ValidationDecoratorOptions {
   /**
@@ -63,9 +64,9 @@ export function registerDecorator(options: ValidationDecoratorOptions): void {
         return validator.validate(value, validationArguments);
       }
 
-      defaultMessage(validationArguments?: ValidationArguments): string {
+      defaultMessage(validationArguments: ValidationArguments, translate: TranslateFunction): string {
         if (validator.defaultMessage) {
-          return validator.defaultMessage(validationArguments);
+          return validator.defaultMessage(validationArguments, translate);
         }
 
         return '';

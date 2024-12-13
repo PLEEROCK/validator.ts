@@ -1,7 +1,9 @@
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isHashValidator from 'validator/lib/isHash';
 import * as ValidatorJS from 'validator';
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 
 export const IS_HASH = 'isHash';
 
@@ -26,10 +28,7 @@ export function IsHash(algorithm: string, validationOptions?: ValidationOptions)
       constraints: [algorithm],
       validator: {
         validate: (value, args): boolean => isHash(value, args?.constraints[0]),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a hash of type $constraint1',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-hash-each' : 'is-hash'),
       },
     },
     validationOptions

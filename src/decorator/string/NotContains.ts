@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import containsValidator from 'validator/lib/contains';
 
 export const NOT_CONTAINS = 'notContains';
@@ -23,10 +25,7 @@ export function NotContains(seed: string, validationOptions?: ValidationOptions)
       constraints: [seed],
       validator: {
         validate: (value, args): boolean => notContains(value, args?.constraints[0]),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property should not contain a $constraint1 string',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'not-contains-each' : 'not-contains'),
       },
     },
     validationOptions

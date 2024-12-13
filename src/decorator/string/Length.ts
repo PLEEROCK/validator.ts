@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isLengthValidator from 'validator/lib/isLength';
 
 export const IS_LENGTH = 'isLength';
@@ -23,19 +25,16 @@ export function Length(min: number, max?: number, validationOptions?: Validation
       constraints: [min, max],
       validator: {
         validate: (value, args): boolean => length(value, args?.constraints[0], args?.constraints[1]),
-        defaultMessage: buildMessage((eachPrefix, args) => {
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => {
           const isMinLength = args?.constraints[0] !== null && args?.constraints[0] !== undefined;
           const isMaxLength = args?.constraints[1] !== null && args?.constraints[1] !== undefined;
           if (isMinLength && (!args.value || args.value.length < args?.constraints[0])) {
-            return eachPrefix + '$property must be longer than or equal to $constraint1 characters';
+            return translate(validationOptions?.each ? 'is-min-length-each' : 'is-min-length');
           } else if (isMaxLength && args.value.length > args?.constraints[1]) {
-            return eachPrefix + '$property must be shorter than or equal to $constraint2 characters';
+            return translate(validationOptions?.each ? 'is-max-length-each' : 'is-max-length');
           }
-          return (
-            eachPrefix +
-            '$property must be longer than or equal to $constraint1 and shorter than or equal to $constraint2 characters'
-          );
-        }, validationOptions),
+          return translate(validationOptions?.each ? 'length-each' : 'length');
+        },
       },
     },
     validationOptions

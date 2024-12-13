@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const IS_IN = 'isIn';
 
@@ -20,10 +22,7 @@ export function IsIn(values: readonly any[], validationOptions?: ValidationOptio
       constraints: [values],
       validator: {
         validate: (value, args): boolean => isIn(value, args?.constraints[0]),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be one of the following values: $constraint1',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-in-each' : 'is-in')
       },
     },
     validationOptions

@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const IS_FIREBASE_PUSH_ID = 'IsFirebasePushId';
 
@@ -22,10 +24,7 @@ export function IsFirebasePushId(validationOptions?: ValidationOptions): Propert
       name: IS_FIREBASE_PUSH_ID,
       validator: {
         validate: (value, args): boolean => isFirebasePushId(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a Firebase Push Id',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-firebase-push-id-each' : 'is-firebase-push-id'),
       },
     },
     validationOptions

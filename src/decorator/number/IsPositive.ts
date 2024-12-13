@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const IS_POSITIVE = 'isPositive';
 
@@ -19,10 +21,7 @@ export function IsPositive(validationOptions?: ValidationOptions): PropertyDecor
       name: IS_POSITIVE,
       validator: {
         validate: (value, args): boolean => isPositive(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a positive number',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-positive-each' : 'is-positive')
       },
     },
     validationOptions

@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isByteLengthValidator from 'validator/lib/isByteLength';
 
 export const IS_BYTE_LENGTH = 'isByteLength';
@@ -23,10 +25,7 @@ export function IsByteLength(min: number, max?: number, validationOptions?: Vali
       constraints: [min, max],
       validator: {
         validate: (value, args): boolean => isByteLength(value, args?.constraints[0], args?.constraints[1]),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + "$property's byte length must fall into ($constraint1, $constraint2) range",
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-byte-length-each' : 'is-byte-length'),
       },
     },
     validationOptions

@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const ARRAY_NOT_CONTAINS = 'arrayNotContains';
 
@@ -24,10 +26,7 @@ export function ArrayNotContains(values: any[], validationOptions?: ValidationOp
       constraints: [values],
       validator: {
         validate: (value, args): boolean => arrayNotContains(value, args?.constraints[0]),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property should not contain $constraint1 values',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'array-not-contains-each' : 'array-not-contains'),
       },
     },
     validationOptions

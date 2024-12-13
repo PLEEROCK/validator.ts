@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isISRCValidator from 'validator/lib/isISRC';
 
 export const IS_ISRC = 'isISRC';
@@ -22,7 +24,7 @@ export function IsISRC(validationOptions?: ValidationOptions): PropertyDecorator
       name: IS_ISRC,
       validator: {
         validate: (value, args): boolean => isISRC(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be an ISRC', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-isrc-each' : 'is-isrc'),
       },
     },
     validationOptions

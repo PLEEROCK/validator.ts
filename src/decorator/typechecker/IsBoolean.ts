@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const IS_BOOLEAN = 'isBoolean';
 
@@ -19,7 +21,7 @@ export function IsBoolean(validationOptions?: ValidationOptions): PropertyDecora
       name: IS_BOOLEAN,
       validator: {
         validate: (value, args): boolean => isBoolean(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a boolean value', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-boolean-each' : 'is-boolean')
       },
     },
     validationOptions

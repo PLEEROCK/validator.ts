@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isJwtValidator from 'validator/lib/isJWT';
 
 export const IS_JWT = 'isJwt';
@@ -22,7 +24,7 @@ export function IsJWT(validationOptions?: ValidationOptions): PropertyDecorator 
       name: IS_JWT,
       validator: {
         validate: (value, args): boolean => isJWT(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a jwt string', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-jwt-each' : 'is-jwt'),
       },
     },
     validationOptions

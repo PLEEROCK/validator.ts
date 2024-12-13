@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isJSONValidator from 'validator/lib/isJSON';
 
 export const IS_JSON = 'isJson';
@@ -22,7 +24,7 @@ export function IsJSON(validationOptions?: ValidationOptions): PropertyDecorator
       name: IS_JSON,
       validator: {
         validate: (value, args): boolean => isJSON(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a json string', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-json-each' : 'is-json'),
       },
     },
     validationOptions

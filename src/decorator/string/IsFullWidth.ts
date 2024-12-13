@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isFullWidthValidator from 'validator/lib/isFullWidth';
 
 export const IS_FULL_WIDTH = 'isFullWidth';
@@ -22,10 +24,7 @@ export function IsFullWidth(validationOptions?: ValidationOptions): PropertyDeco
       name: IS_FULL_WIDTH,
       validator: {
         validate: (value, args): boolean => isFullWidth(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must contain a full-width characters',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-full-width-each' : 'is-full-width'),
       },
     },
     validationOptions

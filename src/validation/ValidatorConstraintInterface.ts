@@ -11,5 +11,5 @@ export interface ValidatorConstraintInterface {
   /**
    * Gets default message when validation for this constraint fail.
    */
-  defaultMessage?(validationArguments?: ValidationArguments): string;
+  defaultMessage?(args: any, translate: (key: string) => string): string;
 }

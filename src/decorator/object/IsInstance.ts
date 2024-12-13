@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const IS_INSTANCE = 'isInstance';
 
@@ -25,13 +27,14 @@ export function IsInstance(
       constraints: [targetType],
       validator: {
         validate: (value, args): boolean => isInstance(value, args?.constraints[0]),
-        defaultMessage: buildMessage((eachPrefix, args) => {
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => {
           if (args?.constraints[0]) {
-            return eachPrefix + `$property must be an instance of ${args?.constraints[0].name as string}`;
-          } else {
-            return eachPrefix + `${IS_INSTANCE} decorator expects and object as value, but got falsy value.`;
+            return translate(validationOptions?.each ? 'is-instance-each' : 'is-instance');
           }
-        }, validationOptions),
+
+          const eachPrefix = validationOptions?.each ? 'each value ' : '';
+          return eachPrefix + `${IS_INSTANCE} decorator expects and object as value, but got falsy value.`;
+        },
       },
     },
     validationOptions

@@ -1,7 +1,9 @@
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isISSNValidator from 'validator/lib/isISSN';
 import * as ValidatorJS from 'validator';
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 
 export const IS_ISSN = 'isISSN';
 
@@ -24,7 +26,7 @@ export function IsISSN(options?: ValidatorJS.IsISSNOptions, validationOptions?: 
       constraints: [options],
       validator: {
         validate: (value, args): boolean => isISSN(value, args?.constraints[0]),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be a ISSN', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-issn-each' : 'is-issn'),
       },
     },
     validationOptions

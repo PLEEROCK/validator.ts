@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isRFC3339Validator from 'validator/lib/isRFC3339';
 
 export const IS_RFC_3339 = 'isRFC3339';
@@ -22,7 +24,7 @@ export function IsRFC3339(validationOptions?: ValidationOptions): PropertyDecora
       name: IS_RFC_3339,
       validator: {
         validate: (value, args): boolean => isRFC3339(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be RFC 3339 date', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-rfc-3339-each' : 'is-rfc-3339'),
       },
     },
     validationOptions

@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const ARRAY_CONTAINS = 'arrayContains';
 
@@ -24,10 +26,7 @@ export function ArrayContains(values: any[], validationOptions?: ValidationOptio
       constraints: [values],
       validator: {
         validate: (value, args): boolean => arrayContains(value, args?.constraints[0]),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must contain $constraint1 values',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'array-contains-each' : 'array-contains'),
       },
     },
     validationOptions

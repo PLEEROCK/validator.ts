@@ -1,7 +1,9 @@
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isAlphanumericValidator from 'validator/lib/isAlphanumeric';
 import * as ValidatorJS from 'validator';
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 
 export const IS_ALPHANUMERIC = 'isAlphanumeric';
 
@@ -27,10 +29,7 @@ export function IsAlphanumeric(
       constraints: [locale],
       validator: {
         validate: (value, args): boolean => isAlphanumeric(value, args?.constraints[0]),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must contain only letters and numbers',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-alphanumeric-each' : 'is-alphanumeric'),
       },
     },
     validationOptions

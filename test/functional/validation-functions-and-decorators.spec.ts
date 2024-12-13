@@ -1813,7 +1813,7 @@ describe('IsBtcAddress', () => {
 
   it('should return error object with proper data', () => {
     const validationType = 'isBtcAddress';
-    const message = 'someProperty must be a BTC address';
+    const message = 'class-validator.is-btc-address';
     checkReturnedError(new MyClass(), invalidValues, validationType, message);
   });
 });

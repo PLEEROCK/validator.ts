@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const IS_OBJECT = 'isObject';
 
@@ -21,7 +23,7 @@ export function IsObject(validationOptions?: ValidationOptions): PropertyDecorat
       name: IS_OBJECT,
       validator: {
         validate: (value, args): boolean => isObject(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be an object', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-object-each' : 'is-object')
       },
     },
     validationOptions

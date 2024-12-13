@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 
 export const IS_NUMBER = 'isNumber';
 
@@ -51,10 +53,7 @@ export function IsNumber(options: IsNumberOptions = {}, validationOptions?: Vali
       constraints: [options],
       validator: {
         validate: (value, args): boolean => isNumber(value, args?.constraints[0]),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a number conforming to the specified constraints',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-number-each' : 'is-number')
       },
     },
     validationOptions

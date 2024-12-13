@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isISO31661Alpha2Validator from 'validator/lib/isISO31661Alpha2';
 
 export const IS_ISO31661_ALPHA_2 = 'isISO31661Alpha2';
@@ -20,10 +22,7 @@ export function IsISO31661Alpha2(validationOptions?: ValidationOptions): Propert
       name: IS_ISO31661_ALPHA_2,
       validator: {
         validate: (value, args): boolean => isISO31661Alpha2(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be a valid ISO31661 Alpha2 code',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-iso31661-alpha2-each' : 'is-iso31661-alpha2'),
       },
     },
     validationOptions

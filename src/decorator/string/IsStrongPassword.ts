@@ -1,6 +1,8 @@
 import * as validator from 'validator';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 
 export const IS_STRONG_PASSWORD = 'isStrongPassword';
 
@@ -34,7 +36,7 @@ export function IsStrongPassword(
       constraints: [options],
       validator: {
         validate: (value, args): boolean => isStrongPassword(value, args.constraints[0]),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property is not strong enough', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-strong-password-each' : 'is-strong-password'),
       },
     },
     validationOptions

@@ -83,4 +83,52 @@ describe('validator options', () => {
       expect(errors[0].constraints).toEqual({ unknownValue: 'an unknown value was passed to the validate function' });
     });
   });
+
+  it('should not perform translation to any language other than the driver default language when none is specifie', () => {
+    class MyClass {
+      @IsNotEmpty()
+      title: string = '';
+    }
+
+    const model = new MyClass();
+    model.title = '';
+    return validator
+      .validate(model)
+      .then(errors => {
+        expect(errors.length).toEqual(1);
+        expect(errors[0].constraints).toEqual({ isNotEmpty: 'title should not be empty' });
+      });
+  });
+
+  it('should not perform the translation to any language other than the specified language', () => {
+    class MyClass {
+      @IsNotEmpty()
+      title: string = '';
+    }
+
+    const model = new MyClass();
+    model.title = '';
+    return validator
+      .validate(model, { language: 'en' })
+      .then(errors => {
+        expect(errors.length).toEqual(1);
+        expect(errors[0].constraints).toEqual({ isNotEmpty: 'title should not be empty' });
+      });
+  });
+
+  it('should not translate the error if enter an unsupported language', () => {
+    class MyClass {
+      @IsNotEmpty()
+      title: string = '';
+    }
+
+    const model = new MyClass();
+    model.title = '';
+    return validator
+      .validate(model, { language: 'xx' })
+      .then(errors => {
+        expect(errors.length).toEqual(1);
+        expect(errors[0].constraints).toEqual({ isNotEmpty: 'class-validator.is-not-empty' });
+      });
+  });
 });

@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isMimeTypeValidator from 'validator/lib/isMimeType';
 
 export const IS_MIME_TYPE = 'isMimeType';
@@ -22,10 +24,7 @@ export function IsMimeType(validationOptions?: ValidationOptions): PropertyDecor
       name: IS_MIME_TYPE,
       validator: {
         validate: (value, args): boolean => isMimeType(value),
-        defaultMessage: buildMessage(
-          eachPrefix => eachPrefix + '$property must be MIME type format',
-          validationOptions
-        ),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-mime-type-each' : 'is-mime-type'),
       },
     },
     validationOptions

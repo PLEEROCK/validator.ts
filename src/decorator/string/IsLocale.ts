@@ -1,5 +1,7 @@
+import { ValidationArguments } from '../../validation/ValidationArguments';
+import { TranslateFunction } from '../../validation/ValidationExecutor';
 import { ValidationOptions } from '../ValidationOptions';
-import { buildMessage, ValidateBy } from '../common/ValidateBy';
+import { ValidateBy } from '../common/ValidateBy';
 import isLocaleValidator from 'validator/lib/isLocale';
 
 export const IS_LOCALE = 'isLocale';
@@ -22,7 +24,7 @@ export function IsLocale(validationOptions?: ValidationOptions): PropertyDecorat
       name: IS_LOCALE,
       validator: {
         validate: (value, args): boolean => isLocale(value),
-        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must be locale', validationOptions),
+        defaultMessage: (args: ValidationArguments, translate: TranslateFunction) => translate(validationOptions?.each ? 'is-locale-each' : 'is-locale'),
       },
     },
     validationOptions
